@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista Empresas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/empresas}">Empresas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/orcamentos}">Orçamentos</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container my-3">
+        <h2>Empresas</h2>
+        <a th:href="@{/empresas/cadastrar}" class="btn btn-primary">Adicionar</a>
+        <div class="my-3 table-responsive-md">
+            <table class="table table-striped  ">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Atividade</th>
+                        <th>CNPJ</th>
+                        <th>Inscrição Estadual</th>
+                        <th>Contatos</th>
+                        <th>Endereço</th>
+                        <th>Observação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="empresa: ${empresas}">
+                        <td th:text="${empresa.nome}"></td>
+                        <td th:text="${empresa.atividade}"></td>
+                        <td th:text="${empresa.cnpj}"></td>
+                        <td th:text="${empresa.inscricaoEstadual}"></td>
+                        <td>
+                            <a th:href="@{/empresas/{id}/contatos(id=${empresa.id})}" type="button"
+                                class="btn btn-primary">Contatos</a>
+                        </td>
+                        <td>
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                th:attr="data-bs-target='#modalEndereco'+${empresa.id}">
+                                Ver
+                            </button>
+                            <!-- The Modal -->
+                            <div class="modal" th:id="'modalEndereco'+${empresa.id}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+    
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Endereço</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <h6>CEP</h6>
+                                            <p th:text="${empresa.endereco.cep}"></p>
+                                            <h6>Estado</h6>
+                                            <p th:text="${empresa.endereco.estado}"></p>
+                                            <h6>Cidade</h6>
+                                            <p th:text="${empresa.endereco.cidade}"></p>
+                                            <h6>Bairro</h6>
+                                            <p th:text="${empresa.endereco.bairro}"></p>
+                                            <h6>Logradouro</h6>
+                                            <p th:text="${empresa.endereco.logradouro}"></p>
+                                            <h6>Numero</h6>
+                                            <p th:text="${empresa.endereco.numero}"></p>
+                                            <h6>Complemento</h6>
+                                            <p th:text="${empresa.endereco.complemento}"></p>
+    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" th:attr="data-bs-target='#modalObs'+${empresa.id}">
+                                Ver
+                            </button>
+                            <!-- The Modal -->
+                            <div class="modal" id="modalObs"th:id="'modalObs'+${empresa.id}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+    
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Observações</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <p th:text="${empresa.observacao}"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a th:href="@{/empresas/edit/{id}(id=${empresa.id})}" class="btn btn-success">Atualizar</a>
+    
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" th:attr="data-bs-target='#modalDel'+${empresa.id}">
+                                Deletar
+                            </button>
+                            <!-- The Modal -->
+                            <div class="modal" th:id="'modalDel'+${empresa.id}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+    
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Tem certeza que quer deletar?</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <a th:href="@{/empresas/deletar/{id}(id=${empresa.id})}"
+                                                class="btn btn-danger">Sim</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+    
+    
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

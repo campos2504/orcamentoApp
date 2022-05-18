@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista Conatos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/empresas}">Empresas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/orcamentos}">Orçamentos</a>
+                </li>
+            </ul>
+            <span th:text="${empresa.nome}" class="navbar-text me-3">
+                Navbar text with an inline element
+              </span>
+        </div>
+    </nav>
+
+    <div class="container my-3">
+        <h2>Contatos da <span th:text="${empresa.nome}"></span></h2>
+        <a th:href="@{/empresas/{idEmpresa}/contatos/cadastrar (idEmpresa=${empresa.id})}" class="btn btn-primary">Adicionar</a>
+        <div class="my-3 table-responsive-md">
+            <table class="table table-striped">
+                <thead class="table-dark"> 
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Departamento</th>
+                        <th>Observação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="contato: ${contatos}">
+                        <td th:text="${contato.nome}"></td>
+                        <td th:text="${contato.email}"></td>
+                        <td th:text="${contato.telefone}"></td>
+                        <td th:text="${contato.departamento}"></td>
+                
+                     
+                        
+                        <td>
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" th:attr="data-bs-target='#modalObs'+${contato.id}">
+                                Ver
+                            </button>
+                            <!-- The Modal -->
+                            <div class="modal" id="modalObs"th:id="'modalObs'+${contato.id}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+    
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Observações</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <p th:text="${contato.observacao}"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a th:href="@{/empresas/{idEmpresa}/contatos/edit/{id} (idEmpresa=${empresa.id},id=${contato.id})}" class="btn btn-success">Atualizar</a>
+    
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" th:attr="data-bs-target='#modalDel'+${contato.id}">
+                                Deletar
+                            </button>
+                            <!-- The Modal -->
+                            <div class="modal" th:id="'modalDel'+${contato.id}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+    
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Tem certeza que quer deletar?</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <a th:href="@{/empresas/{idEmpresa}/contatos/deletar/{id} (idEmpresa=${empresa.id},id=${contato.id})}"
+                                                class="btn btn-danger">Sim</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+    
+    
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        
+    </div>
+
+    <footer>
+ 
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

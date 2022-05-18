@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastrar Empresa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/empresas}">Empresas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/orcamentos}">Orçamentos</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8 container justify-content-center card">
+                <h1 class="text-center"> Atualizar contato <span th:text="${empresa.nome}"></span></h1>
+                <div class="card-body">
+                    <form class="row needs-validation" th:action="@{/empresas/{idEmpresa}/contatos/{id} (idEmpresa=${empresa.id},id=${contato.id})}" th:object="${contato}" method="POST"
+                        novalidate>
+                        <div class="col-md-12 mb-3">
+                            <label> Nome </label>
+                            <input type="text" name="nome" th:field="*{nome}" class="form-control" placeholder="Nome"
+                                required />
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label> Email </label>
+                            <input type="email" name="email" th:field="*{email}" class="form-control"
+                                placeholder="Email" required/>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label> Telefone </label>
+                            <input type="text" name="telefone" th:field="*{telefone}" class="form-control" placeholder="Telefone"
+                                 />
+                        </div>
+                    
+                        <div class="col-md-12 mb-3">
+                            <label> Departamento </label>
+                            <input type="text" name="departamento" th:field="*{departamento}"
+                                class="form-control" placeholder="Departamento"  />
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label> Observacao </label>
+                            <input type="text" name="observacao" th:field="*{observacao}" class="form-control"
+                                placeholder="Observacao"/>
+                        </div>
+                            <div class="col-md-4 mb-3 mx-auto">
+                                <button class="btn btn-primary" type="submit">Salvar</button>
+                            </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
