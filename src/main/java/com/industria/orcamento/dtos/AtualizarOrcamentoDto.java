@@ -1,10 +1,12 @@
 package com.industria.orcamento.dtos;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class CriarOrcamentoDto {
-
+@Builder
+public class AtualizarOrcamentoDto {
+    private Long id;
     private String numero;
     private String observacao;
     private Long empresaId;

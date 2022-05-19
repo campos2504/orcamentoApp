@@ -2,9 +2,10 @@ package com.industria.orcamento.controllers;
 
 import java.util.List;
 
-
+import com.industria.orcamento.dtos.AtualizarOrcamentoDto;
 import com.industria.orcamento.dtos.CriarOrcamentoDto;
-
+import com.industria.orcamento.mappers.OrcamentoMapper;
+import com.industria.orcamento.models.entitys.Contato;
 import com.industria.orcamento.models.entitys.Empresa;
 import com.industria.orcamento.models.entitys.Orcamento;
 import com.industria.orcamento.services.ContatoService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/orcamentos")
@@ -47,12 +49,23 @@ public class OrcamentoController {
     public String create(Model model) {
 
         CriarOrcamentoDto orcamentoDto = new CriarOrcamentoDto();
-        List<Empresa> empresas = eService.listarEmpresas();
 
         model.addAttribute("numero", "1234");
-        model.addAttribute("empresas", empresas);
         model.addAttribute("orcamento", orcamentoDto);
         return "orcamentos/criarOrcamento";
+
+    }
+
+    @GetMapping("/empresas")
+    @ResponseBody
+    public List<Empresa> getEmpresas() {
+        return eService.listarEmpresas();
+
+    }
+    @GetMapping("/contatos/{id}")
+    @ResponseBody
+    public List<Contato> getContatos(@PathVariable Long id) {
+        return eService.buscarEmpresaPeloId(id).getContatos();
 
     }
 
@@ -63,29 +76,28 @@ public class OrcamentoController {
 	}
 
     @PostMapping()
-    public String salvarEmpresa(@ModelAttribute("empresa") CriarOrcamentoDto orcamentoDto) {
+    public String salvarOrcamento(@ModelAttribute("orcamento") CriarOrcamentoDto orcamentoDto) {
         service.salvarOrcamento(orcamentoDto);
         return "redirect:/orcamentos";
     }
 
     
 
-    // @GetMapping("/edit/{id}")
-    // public String atualizarEmpresa(@PathVariable Long id, Model model) {
-    //     AtualizarEmpresaDto empresaDto=EmpresaMapper.toAttEmpresaDto(service.buscarEmpresaPeloId(id));
-    //     Estado[] estados = Estado.values();
-    //     model.addAttribute("options", estados);
-    //     model.addAttribute("empresa", empresaDto);
-    //     return "empresas/atualizarEmpresa";
-    // }
+    @GetMapping("/edit/{id}")
+    public String atualizar(@PathVariable Long id, Model model) {
+        AtualizarOrcamentoDto orcamentoDto=OrcamentoMapper.toAttOrcamentoDto(service.buscarOrcamentoPeloId(id));
+        model.addAttribute("orcamento", orcamentoDto);
+        model.addAttribute("numero", orcamentoDto.getNumero());
+        return "orcamentos/atualizarOrcamento";
+    }
 
-    // @PostMapping("/{id}")
-    // public String atualizar(@PathVariable Long id,
-    //         @ModelAttribute("empresa") AtualizarEmpresaDto empresaDto,
-    //         Model model) {
-    //             empresaDto.setId(id);
-    //     service.atualizarEmpresa(empresaDto);
-    //     return "redirect:/empresas";
-    // }
+    @PostMapping("/{id}")
+    public String atualizar(@PathVariable Long id,
+            @ModelAttribute("orcamento") AtualizarOrcamentoDto orcamentoDto,
+            Model model) {
+                orcamentoDto.setId(id);
+        service.atualizar(orcamentoDto);
+        return "redirect:/orcamentos";
+    }
 
 }
